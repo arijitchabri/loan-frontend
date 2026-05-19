@@ -20,110 +20,195 @@ function CollateralCard({ collateral, onEdit, onDelete }) {
       onMouseOver={() => setHovered(true)}
       onMouseOut={() => setHovered(false)}
       style={{
-        background: hovered ? "#111" : "#0e0e0e",
-        border: "1px solid",
-        borderColor: hovered ? "#333" : "#1a1a1a",
-        padding: "28px",
-        transition: "all 0.2s",
+        ...S.card,
+        background: hovered ? "#232938" : "#1B1F2A",
+        borderColor: hovered ? "#D4AF37" : "#2A3142",
+        transform: hovered ? "translateY(-2px)" : "translateY(0)",
         position: "relative",
         display: "flex",
         flexDirection: "column",
         gap: "20px",
       }}
     >
-      {/* Top accent */}
-      <div style={{
-        position: "absolute", top: 0, left: 0,
-        width: hovered ? "100%" : "32px",
-        height: "2px",
-        background: "#fff",
-        transition: "width 0.3s ease",
-      }} />
+      {/* Top Accent */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: hovered ? "100%" : "40px",
+          height: "2px",
+          background: "#D4AF37",
+          transition: "width 0.3s ease",
+        }}
+      />
 
       {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
         <div>
-          <div style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "9px",
-            color: "#444",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            marginBottom: "6px",
-          }}>
+          <div
+            style={{
+              ...S.mono,
+              fontSize: "13px",
+              color: "#7C8593",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              marginBottom: "8px",
+            }}
+          >
             {collateral.customer?.name || "Unknown"}
           </div>
-          <div style={{
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "-0.02em",
-          }}>
+
+          <div
+            style={{
+              fontSize: "22px",
+              fontWeight: 700,
+              color: "#F5F5F5",
+            }}
+          >
             {collateral.type}
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "12px" }}>
+        <div style={{ display: "flex", gap: "14px" }}>
           <button
             onClick={() => onEdit(collateral)}
-            style={{ ...S.mono, fontSize: "10px", color: "#555", background: "none", border: "none", cursor: "pointer", letterSpacing: "0.1em", textTransform: "uppercase", padding: 0, transition: "color 0.2s" }}
-            onMouseOver={e => e.target.style.color = "#fff"}
-            onMouseOut={e => e.target.style.color = "#555"}
+            style={{
+              ...S.mono,
+              fontSize: "13px",
+              color: "#B0B7C3",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              transition: "0.2s",
+            }}
+            onMouseOver={(e) => (e.target.style.color = "#D4AF37")}
+            onMouseOut={(e) => (e.target.style.color = "#B0B7C3")}
           >
             EDIT
           </button>
+
           <button
             onClick={() => onDelete(collateral.id)}
-            style={{ ...S.mono, fontSize: "10px", color: "#555", background: "none", border: "none", cursor: "pointer", letterSpacing: "0.1em", textTransform: "uppercase", padding: 0, transition: "color 0.2s" }}
-            onMouseOver={e => e.target.style.color = "#ff4444"}
-            onMouseOut={e => e.target.style.color = "#555"}
+            style={{
+              ...S.mono,
+              fontSize: "13px",
+              color: "#B0B7C3",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              transition: "0.2s",
+            }}
+            onMouseOver={(e) => (e.target.style.color = "#EF4444")}
+            onMouseOut={(e) => (e.target.style.color = "#B0B7C3")}
           >
-            DEL
+            DELETE
           </button>
         </div>
       </div>
 
-      {/* Value highlight */}
-      <div style={{
-        background: "#080808",
-        border: "1px solid #1a1a1a",
-        padding: "16px 20px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}>
+      {/* Value Box */}
+      <div
+        style={{
+          background: "#151821",
+          border: "1px solid #2A3142",
+          borderRadius: "14px",
+          padding: "20px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div>
-          <div style={{ ...S.mono, fontSize: "9px", color: "#444", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "4px" }}>
-            Est. Value
+          <div
+            style={{
+              ...S.mono,
+              fontSize: "13px",
+              color: "#7C8593",
+              textTransform: "uppercase",
+              marginBottom: "8px",
+            }}
+          >
+            Estimated Value
           </div>
-          <div style={{ fontSize: "22px", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>
+
+          <div
+            style={{
+              fontSize: "26px",
+              fontWeight: 800,
+              color: "#D4AF37",
+              letterSpacing: "-0.03em",
+            }}
+          >
             ₹{collateral.estimatedValue?.toLocaleString("en-IN")}
           </div>
         </div>
+
         <div style={{ textAlign: "right" }}>
-          <div style={{ ...S.mono, fontSize: "9px", color: "#444", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "4px" }}>
+          <div
+            style={{
+              ...S.mono,
+              fontSize: "13px",
+              color: "#7C8593",
+              textTransform: "uppercase",
+              marginBottom: "8px",
+            }}
+          >
             Weight
           </div>
-          <div style={{ ...S.mono, fontSize: "18px", color: "#888" }}>
+
+          <div
+            style={{
+              fontSize: "18px",
+              fontWeight: 600,
+              color: "#B0B7C3",
+            }}
+          >
             {collateral.weight}g
           </div>
         </div>
       </div>
 
-      {/* Divider */}
-      <div style={{ height: "1px", background: "#1a1a1a" }} />
+      <div style={S.divider} />
 
       {/* Details */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "18px",
+        }}
+      >
         {[
           { label: "Description", value: collateral.description },
           { label: "Remark", value: collateral.remark },
         ].map(({ label, value }) => (
           <div key={label}>
-            <div style={{ ...S.mono, fontSize: "9px", color: "#444", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "4px" }}>
+            <div
+              style={{
+                ...S.mono,
+                fontSize: "13px",
+                color: "#7C8593",
+                textTransform: "uppercase",
+                marginBottom: "6px",
+              }}
+            >
               {label}
             </div>
-            <div style={{ ...S.mono, fontSize: "12px", color: "#666" }}>
+
+            <div
+              style={{
+                fontSize: "14px",
+                color: "#B0B7C3",
+                lineHeight: 1.6,
+              }}
+            >
               {value || "—"}
             </div>
           </div>
@@ -229,11 +314,11 @@ function Collaterals() {
         justifyContent: "space-between",
         alignItems: "flex-end",
         marginBottom: "40px",
-        borderBottom: "1px solid #1a1a1a",
+        borderBottom: "1px solid #2A3142",
         paddingBottom: "28px",
       }}>
         <div>
-          <div style={{ ...S.mono, fontSize: "10px", color: "#555", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "10px" }}>
+          <div style={{ ...S.mono, fontSize: "10px", color: "#7C8593", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "10px" }}>
             {displayed.length} RECORDS
           </div>
           <h1 style={S.pageTitle}>Collaterals</h1>
@@ -247,7 +332,7 @@ function Collaterals() {
               ...S.input,
               width: "auto",
               padding: "10px 16px",
-              color: filterCustomerId ? "#fff" : "#555",
+              color: filterCustomerId ? "#F5F5F5" : "#7C8593",
               cursor: "pointer",
             }}
           >
@@ -260,8 +345,8 @@ function Collaterals() {
           <button
             onClick={handleAdd}
             style={S.btnPrimary}
-            onMouseOver={e => e.currentTarget.style.background = "#e0e0e0"}
-            onMouseOut={e => e.currentTarget.style.background = "#fff"}
+            onMouseOver={e => e.currentTarget.style.background = "#E6C55A"}
+            onMouseOut={e => e.currentTarget.style.background = "#D4AF37"}
           >
             + ADD COLLATERAL
           </button>
@@ -284,7 +369,7 @@ function Collaterals() {
           position: "relative",
         }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: "#fff" }} />
-          <div style={{ ...S.mono, fontSize: "10px", color: "#555", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "24px" }}>
+          <div style={{ ...S.mono, fontSize: "10px", color: "#7C8593", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "24px" }}>
             {editingId ? "EDIT COLLATERAL" : "NEW COLLATERAL"}
           </div>
 
@@ -356,8 +441,8 @@ function Collaterals() {
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-          gap: "1px",
-          background: "#1a1a1a",
+gap: "20px",
+background: "transparent",
         }}>
           {displayed.map((c) => (
             <CollateralCard

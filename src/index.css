@@ -2,21 +2,104 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-* { box-sizing: border-box; }
-
-body {
-  background-color: #111318;
-  color: #e2e8f0;
-  font-family: 'Syne', sans-serif;
-  -webkit-font-smoothing: antialiased;
+* {
+  box-sizing: border-box;
 }
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #111318; }
-::-webkit-scrollbar-thumb { background: #272b35; border-radius: 2px; }
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #0F1115;
+}
 
-input, select, textarea {
-  font-family: 'JetBrains Mono', monospace !important;
+body {
+  background-color: #0F1115;
+  color: #F5F5F5;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #151821;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2A3142;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Inputs */
+
+input,
+select,
+textarea {
+  font-family: 'Inter', sans-serif !important;
+  background: #151821;
+  color: #F5F5F5;
+  border: 1px solid #2A3142;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.12);
+}
+
+/* Buttons */
+
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Selection */
+
+::selection {
+  background: #D4AF37;
+  color: #0F1115;
+}
+
+/* Utility Classes */
+
+.gold-text {
+  color: #D4AF37;
+}
+
+.muted-text {
+  color: #7C8593;
+}
+
+.secondary-text {
+  color: #B0B7C3;
+}
+
+.card-bg {
+  background: #1B1F2A;
+}
+
+.border-dark {
+  border-color: #2A3142;
 }
