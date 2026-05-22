@@ -14,10 +14,10 @@ function Navbar({ onLogout }) {
         fontSize: "11px",
         letterSpacing: "0.15em",
         textTransform: "uppercase",
-        color: active ? "#38bdf8" : "#4a5568",
+        color: active ? "#D4AF37" : "#7C8593",
         textDecoration: "none",
         paddingBottom: "2px",
-        borderBottom: active ? "1px solid #38bdf8" : "1px solid transparent",
+        borderBottom: active ? "1px solid #D4AF37" : "1px solid transparent",
         transition: "all 0.2s",
       }}>
         {label}
@@ -27,8 +27,8 @@ function Navbar({ onLogout }) {
 
   return (
     <nav style={{
-      background: "#1c1f26",
-      borderBottom: "1px solid #272b35",
+      background: "#1B1F2A",
+      borderBottom: "1px solid #2A3142",
       padding: "0 40px",
       height: "56px",
       display: "flex",
@@ -40,13 +40,13 @@ function Navbar({ onLogout }) {
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "48px" }}>
         <span style={{
-          fontFamily: "'Syne', sans-serif",
+          fontFamily: "'Inter', sans-serif",
           fontWeight: 800,
           fontSize: "15px",
-          color: "#e2e8f0",
+          color: "#F5F5F5",
           letterSpacing: "-0.02em",
         }}>
-          LOAN<span style={{ color: "#38bdf8" }}>MGR</span>
+          LOAN<span style={{ color: "#D4AF37" }}>MGR</span>
         </span>
         <div style={{ display: "flex", gap: "32px" }}>
           {navLink("/dashboard", "Dashboard")}
@@ -62,14 +62,14 @@ function Navbar({ onLogout }) {
           fontSize: "10px",
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "#4a5568",
+          color: "#7C8593",
           background: "none",
           border: "none",
           cursor: "pointer",
           transition: "color 0.2s",
         }}
-        onMouseOver={e => e.target.style.color = "#f87171"}
-        onMouseOut={e => e.target.style.color = "#4a5568"}
+        onMouseOver={e => e.target.style.color = "#EF4444"}
+        onMouseOut={e => e.target.style.color = "#7C8593"}
       >
         LOGOUT →
       </button>

@@ -8,13 +8,22 @@ const emptyCustomerForm = {
 };
 
 const emptyCollateralForm = {
-  customerId: "", type: "", weight: "",
-  estimatedValue: "", image: "", description: "", remark: "",
+  customerId: "",
+  collateralType: "",
+  weight: "",
+  purityPercentage: "",
+  estimatedValue: "",
+  image: "",
+  description: "",
+  remark: "",
+  status: "ACTIVE",
 };
 
 // ─── Collateral Card ───────────────────────────────────────────────
 function CollateralCard({ collateral, onEdit, onDelete }) {
   const [hovered, setHovered] = useState(false);
+  const statusColor = collateral.status === "RELEASED" ? "#10B981" : "#D4AF37";
+  const statusLabel = (collateral.status || "ACTIVE").toUpperCase();
 
   return (
     <div
@@ -40,8 +49,22 @@ function CollateralCard({ collateral, onEdit, onDelete }) {
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <div style={{ ...S.mono, fontSize: "11px", color: "#7C8593", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>
-            {collateral.type}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+            <div style={{ ...S.mono, fontSize: "11px", color: "#7C8593", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+              {collateral.collateralType}
+            </div>
+            <div style={{
+              ...S.mono,
+              fontSize: "10px",
+              color: "#0F1115",
+              background: statusColor,
+              borderRadius: "999px",
+              padding: "4px 10px",
+              textTransform: "uppercase",
+              letterSpacing: "0.12em",
+            }}>
+              {statusLabel}
+            </div>
           </div>
           <div style={{ fontSize: "22px", fontWeight: 700, color: "#F5F5F5" }}>
             ₹{collateral.estimatedValue?.toLocaleString("en-IN")}
@@ -74,8 +97,8 @@ function CollateralCard({ collateral, onEdit, onDelete }) {
           <div style={{ fontSize: "18px", fontWeight: 600, color: "#B0B7C3" }}>{collateral.weight}g</div>
         </div>
         <div style={{ textAlign: "right" }}>
-          <div style={{ ...S.mono, fontSize: "11px", color: "#7C8593", textTransform: "uppercase", marginBottom: "6px" }}>Remark</div>
-          <div style={{ fontSize: "14px", color: "#B0B7C3" }}>{collateral.remark || "—"}</div>
+          <div style={{ ...S.mono, fontSize: "11px", color: "#7C8593", textTransform: "uppercase", marginBottom: "6px" }}>Purity</div>
+          <div style={{ fontSize: "16px", fontWeight: 600, color: "#B0B7C3" }}>{collateral.purityPercentage}%</div>
         </div>
       </div>
 
@@ -207,12 +230,14 @@ function CustomerDetail({ customer, onBack }) {
   const handleEdit = col => {
     setForm({
       customerId: customer.id,
-      type: col.type,
+      collateralType: col.collateralType || "",
       weight: col.weight,
+      purityPercentage: col.purityPercentage,
       estimatedValue: col.estimatedValue,
       image: col.image || "",
       description: col.description || "",
       remark: col.remark || "",
+      status: col.status || "ACTIVE",
     });
     setEditingId(col.id);
     setShowForm(true);
@@ -248,7 +273,8 @@ function CustomerDetail({ customer, onBack }) {
     }
   };
 
-  const totalValue = collaterals.reduce((sum, c) => sum + (c.estimatedValue || 0), 0);
+  const visibleCollaterals = collaterals.filter(c => c.status !== "RELEASED");
+  const totalValue = visibleCollaterals.reduce((sum, c) => sum + (c.estimatedValue || 0), 0);
 
   return (
     <div style={S.page}>
@@ -363,23 +389,42 @@ function CustomerDetail({ customer, onBack }) {
 
           <form onSubmit={handleSave}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px", marginBottom: "24px" }}>
+
+              {/* Type dropdown */}
+              <div>
+                <label style={S.label}>Type</label>
+                <select name="collateralType" value={form.collateralType || ""} onChange={handleChange} required style={{ ...S.input, cursor: "pointer" }}>
+                  <option value="">Select type</option>
+                  <option value="GOLD">GOLD</option>
+                  <option value="SILVER">SILVER</option>
+                </select>
+              </div>
+
+              {/* Status dropdown */}
+              <div>
+                <label style={S.label}>Status</label>
+                <select name="status" value={form.status || "ACTIVE"} onChange={handleChange} style={{ ...S.input, cursor: "pointer" }}>
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="RELEASED">RELEASED</option>
+                </select>
+              </div>
+
               {[
-                { name: "type", label: "Type", placeholder: "Gold, Silver, Property", required: true },
                 { name: "weight", label: "Weight (g)", placeholder: "10.5", type: "number" },
+                { name: "purityPercentage", label: "Purity %", placeholder: "80", type: "number" },
                 { name: "estimatedValue", label: "Est. Value (₹)", placeholder: "62500", type: "number" },
                 { name: "image", label: "Image URL", placeholder: "Optional" },
                 { name: "remark", label: "Remark", placeholder: "Optional" },
                 { name: "description", label: "Description", placeholder: "Optional" },
-              ].map(({ name, label, placeholder, required, type }) => (
+              ].map(({ name, label, placeholder, type }) => (
                 <div key={name}>
                   <label style={S.label}>{label}</label>
                   <input
                     name={name}
                     type={type || "text"}
-                    value={form[name]}
+                    value={form[name] || ""}
                     onChange={handleChange}
                     placeholder={placeholder}
-                    required={required}
                     step={type === "number" ? "0.01" : undefined}
                     style={S.input}
                     onFocus={e => e.target.style.borderColor = "#D4AF37"}
