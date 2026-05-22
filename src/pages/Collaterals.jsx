@@ -134,6 +134,7 @@ function Collaterals() {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [filterCustomerId, setFilterCustomerId] = useState("");
 
   const fetchCollaterals = async () => {
@@ -197,6 +198,31 @@ function Collaterals() {
     } catch { setError("Failed to delete collateral."); }
   };
 
+  const handleFetchCurrentValues = async () => {
+    setRefreshing(true);
+    setError("");
+    try {
+      try {
+        await api.get("/collaterals/fetch_current_collateral_values");
+      } catch (innerError) {
+        const status = innerError?.response?.status;
+        if (status === 404 || status === 405) {
+          await api.post("/collaterals/fetch_current_collateral_values");
+        } else {
+          throw innerError;
+        }
+      }
+      await fetchCollaterals();
+    } catch {
+      setError("Failed to update collateral values.");
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const activeCollaterals = collaterals.filter((c) => c.status !== "RELEASED");
+  const totalValue = activeCollaterals.reduce((sum, c) => sum + (c.estimatedValue || 0), 0);
+
   const displayed = filterCustomerId
     ? collaterals.filter((c) => String(c.customer?.id) === String(filterCustomerId))
     : collaterals;
@@ -213,6 +239,12 @@ function Collaterals() {
             {displayed.length} RECORDS
           </div>
           <h1 style={S.pageTitle}>Collaterals</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "10px" }}>
+            <div style={{ ...S.mono, fontSize: "10px", color: "#7C8593", textTransform: "uppercase" }}>Total value (excl. released)</div>
+            <div style={{ fontSize: "18px", fontWeight: 700, color: "#D4AF37" }}>
+              ₹{totalValue.toLocaleString("en-IN")}
+            </div>
+          </div>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
           <select
@@ -225,6 +257,13 @@ function Collaterals() {
               <option key={c.id} value={c.id}>{c.name.toUpperCase()}</option>
             ))}
           </select>
+          <button
+            onClick={handleFetchCurrentValues}
+            disabled={refreshing}
+            style={{ ...S.btnSecondary, minWidth: "200px" }}
+            onMouseOver={e => e.currentTarget.style.background = "#2e3648"}
+            onMouseOut={e => e.currentTarget.style.background = "#1B1F2A"}
+          >{refreshing ? "UPDATING..." : "UPDATE CURRENT RATES"}</button>
           <button
             onClick={handleAdd}
             style={S.btnPrimary}
